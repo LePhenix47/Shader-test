@@ -4,13 +4,14 @@ import autoprefixer from "autoprefixer";
 import react from "@vitejs/plugin-react";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import glsl from "vite-plugin-glsl";
 
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   const env = loadEnv(mode, process.cwd(), "VITE_");
 
   return {
-    plugins: [tanstackRouter(), react(), tsconfigPaths()],
+    plugins: [tanstackRouter(), react(), tsconfigPaths(), glsl()],
     envPrefix: ["VITE_"],
     server: {
       port: 5173, // Change the port to your preferred one

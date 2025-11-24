@@ -22,3 +22,19 @@ declare global {
     readonly env: ImportMetaEnv;
   }
 }
+
+// Shader file type declarations
+declare module '*.vert' {
+  const content: string;
+  export default content;
+}
+
+declare module '*.frag' {
+  const content: string;
+  export default content;
+}
+
+declare module '*.glsl' {
+  const content: string;
+  export default content;
+}

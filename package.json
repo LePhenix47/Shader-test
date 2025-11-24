@@ -25,6 +25,7 @@
     "@tanstack/router-plugin": "^1.139.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.181.0",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.22",
     "css-loader": "^6.11.0",
@@ -38,6 +39,7 @@
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
+    "vite-plugin-glsl": "^1.5.4",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "license": "ISC",
@@ -51,6 +53,7 @@
     "gsap": "^3.13.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "three": "^0.181.2",
     "zod": "^4.1.13",
     "zustand": "^5.0.8"
   }
