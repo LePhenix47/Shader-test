@@ -1,4 +1,4 @@
-name: Deploy React Vite Template to GitHub Pages
+name: Deploy shader-test to GitHub Pages
 on:
   push:
     branches:

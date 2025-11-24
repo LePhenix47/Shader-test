@@ -70,7 +70,7 @@ export const Route = createRootRoute({
       { property: 'og:image', content: '/img/png/icon.png' },
       { property: 'og:image:width', content: '1200' },
       { property: 'og:image:height', content: '630' },
-      { property: 'og:url', content: 'https://lephenix47.github.io/React_Vite-template/' },
+      { property: 'og:url', content: 'https://younes-portfolio-dev.vercel.app/React_Vite-template/' },
       // Default Twitter Card tags
       { name: 'twitter:card', content: 'summary_large_image' },
       { name: 'twitter:title', content: 'React Vite Template' },
