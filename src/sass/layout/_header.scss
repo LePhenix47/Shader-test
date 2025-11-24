@@ -1,0 +1,11 @@
+@use "../utils/" as *;
+
+.header {
+
+    grid-row: header;
+    padding: 20px;
+
+    &__title {
+        text-align: center;
+    }
+}
