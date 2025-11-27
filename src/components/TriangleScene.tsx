@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import vertexShader from '@/shaders/triangle.vert';
-import fragmentShader from '@/shaders/triangle.frag';
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
+import vertexShader from "@/shaders/triangle.vert";
+import fragmentShader from "@/shaders/triangle.frag";
 
 export function TriangleScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,11 +30,17 @@ export function TriangleScene() {
     // Create triangle geometry
     const geometry = new THREE.BufferGeometry();
     const vertices = new Float32Array([
-      0.0, 1.0, 0.0,   // Top vertex
-      -1.0, -1.0, 0.0, // Bottom left vertex
-      1.0, -1.0, 0.0   // Bottom right vertex
+      0.0,
+      1.0,
+      0.0, // Top vertex
+      -1.0,
+      -1.0,
+      0.0, // Bottom left vertex
+      1.0,
+      -1.0,
+      0.0, // Bottom right vertex
     ]);
-    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+    geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
 
     // Create shader material using our custom shaders
     // Using RawShaderMaterial to have full control without Three.js injecting code
@@ -47,16 +53,8 @@ export function TriangleScene() {
     const triangle = new THREE.Mesh(geometry, material);
     scene.add(triangle);
 
-    // Animation loop
-    function animate() {
-      requestAnimationFrame(animate);
-
-      // Rotate the triangle for some visual interest
-      triangle.rotation.z += 0.01;
-
-      renderer.render(scene, camera);
-    }
-    animate();
+    // Render the scene once
+    renderer.render(scene, camera);
 
     // Handle window resize
     function handleResize() {
@@ -64,11 +62,11 @@ export function TriangleScene() {
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       renderer.dispose();
       geometry.dispose();
       material.dispose();
@@ -79,10 +77,10 @@ export function TriangleScene() {
     <canvas
       ref={canvasRef}
       style={{
-        display: 'block',
-        width: '100%',
-        height: '100vh',
-        position: 'fixed',
+        display: "block",
+        width: "100%",
+        height: "100vh",
+        position: "fixed",
         top: 0,
         left: 0,
       }}

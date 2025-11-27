@@ -1,12 +1,18 @@
 // Vertex Shader - triangle.vert
-// This shader positions each vertex in 3D space
-
-// Note: These are provided by Three.js but declared here for linting
 attribute vec3 position;
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 
+// Export color to fragment shader
+varying vec3 out_Color;
+
 void main() {
-    // Transform the vertex position from local space to clip space
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    // gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    gl_Position = vec4(position, 1.0);
+
+    // Convert position (-1 to 1) to color (0 to 1)
+    // Top vertex (0, 1, 0) -> (0.5, 1.0, 0.5) = greenish
+    // Bottom left (-1, -1, 0) -> (0.0, 0.0, 0.5) = blueish
+    // Bottom right (1, -1, 0) -> (1.0, 0.0, 0.5) = reddish
+    out_Color = position * 0.5 + 0.5;
 }
