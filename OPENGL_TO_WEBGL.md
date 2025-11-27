@@ -24,30 +24,36 @@ This guide helps you translate OpenGL shader tutorials to WebGL using Three.js.
 **OpenGL (Modern):**
 ```glsl
 #version 330 core
-layout (location = 0) in vec3 aPos;
-out vec4 vertexColor;
+layout (location = 0) in vec3 in_Position;
+out vec4 out_Color;
 
 void main() {
-    gl_Position = vec4(aPos, 1.0);
-    vertexColor = vec4(0.5, 0.0, 0.0, 1.0);
+    gl_Position = vec4(in_Position, 1.0);
+    out_Color = vec4(0.5, 0.0, 0.0, 1.0);
 }
 ```
 
 **WebGL 1.0:**
 ```glsl
-attribute vec3 aPos;
-varying vec4 vertexColor;
+attribute vec3 in_Position;
+varying vec4 out_Color;
 
 void main() {
-    gl_Position = vec4(aPos, 1.0);
-    vertexColor = vec4(0.5, 0.0, 0.0, 1.0);
+    gl_Position = vec4(in_Position, 1.0);
+    out_Color = vec4(0.5, 0.0, 0.0, 1.0);
 }
 ```
 
 **Translation:**
+
 - `in` → `attribute` (vertex shader inputs)
 - `out` → `varying` (data passed to fragment shader)
 - Remove `layout (location = X)` - Three.js handles this automatically
+
+**Naming Convention:**
+
+- Inputs: `in_VariableName` prefix (e.g., `in_Position`, `in_Normal`, `in_UV`)
+- Outputs: `out_VariableName` prefix (e.g., `out_Color`, `out_TexCoord`)
 
 ---
 
@@ -56,11 +62,11 @@ void main() {
 **OpenGL (Modern):**
 ```glsl
 #version 330 core
-in vec4 vertexColor;
-out vec4 FragColor;
+in vec4 in_Color;
+out vec4 out_FragColor;
 
 void main() {
-    FragColor = vertexColor;
+    out_FragColor = in_Color;
 }
 ```
 
@@ -68,17 +74,23 @@ void main() {
 ```glsl
 precision mediump float;
 
-varying vec4 vertexColor;
+varying vec4 in_Color;
 
 void main() {
-    gl_FragColor = vertexColor;
+    gl_FragColor = in_Color;
 }
 ```
 
 **Translation:**
+
 - `in` → `varying` (data from vertex shader)
 - `out vec4 FragColor` → Use `gl_FragColor` built-in
 - Add `precision mediump float;` at the top
+
+**Note on Naming:**
+
+- Fragment shader inputs from vertex shader: Use `in_` prefix (they're inputs to the fragment shader)
+- Uniforms: Often use `u_` prefix (e.g., `u_Time`, `u_Resolution`, `u_Texture`)
 
 ---
 
