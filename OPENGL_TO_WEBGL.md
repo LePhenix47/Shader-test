@@ -2,6 +2,54 @@
 
 This guide helps you translate OpenGL shader tutorials to WebGL using Three.js.
 
+## WebGL/Three.js Graphics Pipeline
+
+### The Full Pipeline
+
+```
+1. CPU (JavaScript/Three.js)
+   → Create vertex data (Float32Array)
+
+2. RAM
+   → Vertex data stored temporarily
+
+3. Upload to GPU
+   → `geometry.setAttribute()` sends data to GPU
+
+4. VRAM (GPU Memory) - "Three.js Buffer"
+   → Vertex Buffer Object (VBO) stores vertex data
+
+5. Vertex Shader (GPU)
+   → Runs once per vertex
+   → Reads: attributes (from VBO), uniforms
+   → Outputs: gl_Position, varying variables
+
+6. Rasterizer (GPU - Automatic)
+   → Interpolates varying values across triangles
+
+7. Fragment Shader (GPU)
+   → Runs once per pixel
+   → Reads: varying (interpolated), uniforms
+   → Outputs: `gl_FragColor`
+
+8. Framebuffer
+   → Final image rendered to screen
+```
+
+### Key Concepts
+
+**Data Types:**
+- `attribute` - Per-vertex data (position, color, UV, etc.) - Read by vertex shader from VBO
+- `varying` - Data passed from vertex → fragment shader (automatically interpolated by GPU)
+- `uniform` - Data that's the same for all vertices/fragments (time, mouse position, textures)
+
+**Important:**
+- Vertex shader runs 3 times for a triangle (once per vertex)
+- Fragment shader runs thousands of times (once per pixel inside the triangle)
+- `varying` variables are automatically interpolated - you don't need to do anything in Three.js!
+
+---
+
 ## Shader Syntax Differences
 
 ### Version Directives
@@ -284,14 +332,14 @@ const material = new THREE.RawShaderMaterial({
 
 ## Quick Reference Table
 
-| OpenGL | WebGL 1.0 (GLSL ES 1.0) | WebGL 2.0 (GLSL ES 3.0) |
-|--------|-------------------------|-------------------------|
-| `#version 330 core` | (omit) | `#version 300 es` |
-| `in` (vertex) | `attribute` | `in` |
-| `out` (vertex) | `varying` | `out` |
-| `in` (fragment) | `varying` | `in` |
-| `out vec4 FragColor` | `gl_FragColor` | `out vec4 FragColor` |
-| `texture()` | `texture2D()` | `texture()` |
+| OpenGL               | WebGL 1.0 (GLSL ES 1.0) | WebGL 2.0 (GLSL ES 3.0) |
+| -------------------- | ----------------------- | ----------------------- |
+| `#version 330 core`  | (omit)                  | `#version 300 es`       |
+| `in` (vertex)        | `attribute`             | `in`                    |
+| `out` (vertex)       | `varying`               | `out`                   |
+| `in` (fragment)      | `varying`               | `in`                    |
+| `out vec4 FragColor` | `gl_FragColor`          | `out vec4 FragColor`    |
+| `texture()`          | `texture2D()`           | `texture()`             |
 
 ---
 
