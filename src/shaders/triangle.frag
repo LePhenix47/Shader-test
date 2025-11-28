@@ -5,6 +5,8 @@ precision mediump float;
 varying vec3 out_Color;
 
 void main() {
-    // Use the interpolated color
-    gl_FragColor = vec4(out_Color, 1.0);
-}
+    // Create a copy to modify
+    vec3 color = out_Color;
+
+    gl_FragColor = vec4(color, 1.0);
+} 
