@@ -30,17 +30,19 @@ export function TriangleScene() {
     // Create triangle geometry
     const geometry = new THREE.BufferGeometry();
     const vertices = new Float32Array([
-      0.0,
-      1.0,
-      0.0, // Top vertex
-      -1.0,
-      -1.0,
-      0.0, // Bottom left vertex
-      1.0,
-      -1.0,
-      0.0, // Bottom right vertex
+      0.0,  1.0,  0.0,   // Top vertex (position)
+      -1.0, -1.0, 0.0,   // Bottom left vertex (position)
+      1.0,  -1.0, 0.0    // Bottom right vertex (position)
     ]);
     geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+
+    // Add vertex colors
+    const colors = new Float32Array([
+      0.0, 1.0, 0.0,   // Top: Green
+      1.0, 0.0, 0.0,   // Bottom left: Red
+      0.0, 0.0, 1.0    // Bottom right: Blue
+    ]);
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
     // Create shader material using our custom shaders
     // Using RawShaderMaterial to have full control without Three.js injecting code
