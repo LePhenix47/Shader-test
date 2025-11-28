@@ -8,7 +8,8 @@ uniform mat4 modelViewMatrix;
 varying vec3 out_Color;
 
 void main() {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    // gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    gl_Position = vec4(position, 1.0);
 
     // Pass the color to fragment shader (GPU will interpolate it)
     out_Color = color;
