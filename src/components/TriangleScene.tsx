@@ -6,6 +6,12 @@ import fragmentShader from "@/shaders/triangle.frag";
 export function TriangleScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const rAFId = useRef<number>(0);
+
+  function cancelAnimationLoop() {
+    cancelAnimationFrame(rAFId.current);
+  }
+
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -17,7 +23,7 @@ export function TriangleScene() {
       0.1,
       1000
     );
-    camera.position.z = 2;
+    camera.position.z = 0;
 
     // Renderer setup
     const renderer = new THREE.WebGLRenderer({
@@ -62,6 +68,9 @@ export function TriangleScene() {
     const material = new THREE.RawShaderMaterial({
       vertexShader,
       fragmentShader,
+      uniforms: {
+        u_time: { value: 0.0 },
+      },
     });
 
     // Create mesh and add to scene
@@ -80,8 +89,20 @@ export function TriangleScene() {
     }
     window.addEventListener("resize", handleResize);
 
+    function animate() {
+      try {
+        material.uniforms.u_time.value += 0.01; // Update every frame
+        renderer.render(scene, camera);
+        rAFId.current = requestAnimationFrame(animate);
+      } catch (error) {
+        cancelAnimationLoop();
+      }
+    }
+    animate();
+
     // Cleanup
     return () => {
+      cancelAnimationLoop();
       window.removeEventListener("resize", handleResize);
       renderer.dispose();
       geometry.dispose();
