@@ -29,46 +29,30 @@ export function TriangleScene() {
 
     // Create triangle geometry
     const geometry = new THREE.BufferGeometry();
+
+    // prettier-ignore
     const vertices = new Float32Array([
-      -0.5,
-      -0.5,
-      0.0, // 0: Bottom-left
-      0.5,
-      -0.5,
-      0.0, // 1: Bottom-right
-      0.5,
-      0.5,
-      0.0, // 2: Top-right
-      -0.5,
-      0.5,
-      0.0, // 3: Top-left
+      -0.5, -0.5, 0.0,  // 0: Bottom-left
+       0.5, -0.5, 0.0,  // 1: Bottom-right
+       0.5,  0.5, 0.0,  // 2: Top-right
+      -0.5,  0.5, 0.0   // 3: Top-left
     ]);
     geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
 
     // Add vertex colors
+    // prettier-ignore
     const colors = new Float32Array([
-      1.0,
-      0.0,
-      0.0, // Top: Green
-      0.0,
-      1.0,
-      0.0, // Bottom left: Red
-      0.0,
-      0.0,
-      1.0, // Bottom right: Blue
-      0.0,
-      1.0,
-      1.0, // Bottom right: Blue
+      1.0, 0.0, 0.0,  // 0: Red (bottom-left)
+      0.0, 1.0, 0.0,  // 1: Green (bottom-right)
+      0.0, 0.0, 1.0,  // 2: Blue (top-right)
+      1.0, 1.0, 0.0   // 3: Yellow (top-left)
     ]);
     geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
+    // prettier-ignore
     const indices = new Uint16Array([
-      0,
-      1,
-      2, // First triangle
-      2,
-      3,
-      0, // Second triangle - reuses vertices 0 and 2!
+      0, 1, 2,  // First triangle
+      2, 3, 0   // Second triangle - reuses vertices 0 and 2!
     ]);
 
     geometry.setIndex(new THREE.BufferAttribute(indices, 1));
