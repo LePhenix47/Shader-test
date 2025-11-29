@@ -14,10 +14,10 @@ export function TriangleScene() {
 
     // prettier-ignore
     const vertices = new Float32Array([
-      -0.5, -0.5, 0.0,  // 0: Bottom-left
-       0.5, -0.5, 0.0,  // 1: Bottom-right
-       0.5,  0.5, 0.0,  // 2: Top-right
-      -0.5,  0.5, 0.0   // 3: Top-left
+      -1.0, -1.0, 0.0,  // 0: Bottom-left
+       1.0, -1.0, 0.0,  // 1: Bottom-right
+       1.0,  1.0, 0.0,  // 2: Top-right
+      -1.0,  1.0, 0.0   // 3: Top-left
     ]);
     geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
 
