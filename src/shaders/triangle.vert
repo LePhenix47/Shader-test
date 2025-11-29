@@ -5,12 +5,14 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 
 // Export color to fragment shader
-varying vec3 out_Color;
+varying vec3 out_color;
+varying vec3 out_position;
 
 void main() {
     // gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     gl_Position = vec4(position, 1.0);
 
     // Pass the color to fragment shader (GPU will interpolate it)
-    out_Color = color;
+    out_color = color;
+    out_position = position;
 }
