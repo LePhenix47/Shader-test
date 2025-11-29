@@ -10,12 +10,17 @@ varying vec3 out_position;
 uniform float u_time;
 uniform vec2 u_mouse;
 uniform vec2 u_resolution;
+uniform sampler2D u_texture;
 
 void main() {
-    vec3 color = vec3(out_color.r, out_color.g, out_color.b);
+    // Normalize coordinates (0 to 1)
+    vec2 uv = gl_FragCoord.xy / u_resolution;
 
-    // Calculate distance from mouse position
-    float dist = distance(gl_FragCoord.xy, u_mouse) * 0.01;
+    // TODO: Create your river effect here by distorting the UV coordinates!
+    // Hint: Modify uv.x or uv.y using sin/cos with u_time
 
-    gl_FragColor = vec4(sin(u_time - dist - color), 1.0);
+    // Sample the texture
+    vec4 texColor = texture2D(u_texture, uv);
+
+    gl_FragColor = texColor;
 }

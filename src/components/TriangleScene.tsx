@@ -3,6 +3,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import vertexShader from "@/shaders/triangle.vert";
 import fragmentShader from "@/shaders/triangle.frag";
+import testImage from "/img/jpg/test.jpg";
 
 export function TriangleScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -41,7 +42,7 @@ export function TriangleScene() {
   }
 
   // Create shader material with uniforms
-  function createMaterial() {
+  function createMaterial(texture: THREE.Texture) {
     return new THREE.RawShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -51,6 +52,7 @@ export function TriangleScene() {
           value: new THREE.Vector2(window.innerWidth, window.innerHeight),
         },
         u_mouse: { value: new THREE.Vector2(0, 0) },
+        u_texture: { value: texture },
       },
     });
   }
@@ -84,11 +86,27 @@ export function TriangleScene() {
   useEffect(() => {
     if (!canvasRef.current) return;
 
+    // Load texture
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load(
+      testImage,
+      // Success callback
+      (tex) => {
+        console.log("Texture loaded successfully!", tex);
+      },
+      // Progress callback
+      undefined,
+      // Error callback
+      (error) => {
+        console.error("Error loading texture:", error);
+      }
+    );
+
     // Initialize Three.js components
     const { scene, camera } = createScene();
     const renderer = createRenderer(canvasRef.current);
     const geometry = createGeometry();
-    const material = createMaterial();
+    const material = createMaterial(texture);
     const mesh = new THREE.Mesh(geometry, material);
 
     scene.add(mesh);
