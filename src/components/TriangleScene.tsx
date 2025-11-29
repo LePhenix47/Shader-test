@@ -51,8 +51,8 @@ export function TriangleScene() {
 
     // prettier-ignore
     const indices = new Uint16Array([
+      2, 3, 0,   // Second triangle - reuses vertices 0 and 2!
       0, 1, 2,  // First triangle
-      2, 3, 0   // Second triangle - reuses vertices 0 and 2!
     ]);
 
     geometry.setIndex(new THREE.BufferAttribute(indices, 1));
