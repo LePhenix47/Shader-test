@@ -46,6 +46,8 @@ export function TriangleScene() {
       fragmentShader,
       uniforms: {
         u_time: { value: 0.0 },
+        u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        u_mouse: { value: new THREE.Vector2(0, 0) },
       },
     });
   }
@@ -88,6 +90,9 @@ export function TriangleScene() {
 
     scene.add(mesh);
 
+    // AbortController for event listeners
+    const abortController = new AbortController();
+
     // Animation loop
     function animate() {
       try {
@@ -105,13 +110,20 @@ export function TriangleScene() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+      material.uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
     }
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { signal: abortController.signal });
+
+    // Handle pointer movement (mouse, touch, stylus)
+    function handlePointerMove(event: PointerEvent) {
+      material.uniforms.u_mouse.value.set(event.clientX, window.innerHeight - event.clientY);
+    }
+    window.addEventListener("pointermove", handlePointerMove, { signal: abortController.signal });
 
     // Cleanup
     return () => {
       cancelAnimationFrame(rAFId.current);
-      window.removeEventListener("resize", handleResize);
+      abortController.abort();
       renderer.dispose();
       geometry.dispose();
       material.dispose();
