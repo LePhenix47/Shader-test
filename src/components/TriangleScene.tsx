@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import gsap from "gsap";
 import vertexShader from "@/shaders/triangle.vert";
 import fragmentShader from "@/shaders/triangle.frag";
 
@@ -46,7 +47,9 @@ export function TriangleScene() {
       fragmentShader,
       uniforms: {
         u_time: { value: 0.0 },
-        u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+        u_resolution: {
+          value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+        },
         u_mouse: { value: new THREE.Vector2(0, 0) },
       },
     });
@@ -93,10 +96,22 @@ export function TriangleScene() {
     // AbortController for event listeners
     const abortController = new AbortController();
 
+    // Smooth mouse tracking with GSAP
+    const mousePos = { x: 0, y: 0 };
+    const quickX = gsap.quickTo(mousePos, "x", {
+      duration: 0.25,
+      ease: "power2.out",
+    });
+    const quickY = gsap.quickTo(mousePos, "y", {
+      duration: 0.25,
+      ease: "power2.out",
+    });
+
     // Animation loop
     function animate() {
       try {
         material.uniforms.u_time.value += 0.01;
+        material.uniforms.u_mouse.value.set(mousePos.x, mousePos.y);
         renderer.render(scene, camera);
         rAFId.current = requestAnimationFrame(animate);
       } catch (error) {
@@ -110,15 +125,23 @@ export function TriangleScene() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      material.uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
+      material.uniforms.u_resolution.value.set(
+        window.innerWidth,
+        window.innerHeight
+      );
     }
-    window.addEventListener("resize", handleResize, { signal: abortController.signal });
+    window.addEventListener("resize", handleResize, {
+      signal: abortController.signal,
+    });
 
     // Handle pointer movement (mouse, touch, stylus)
     function handlePointerMove(event: PointerEvent) {
-      material.uniforms.u_mouse.value.set(event.clientX, window.innerHeight - event.clientY);
+      quickX(event.clientX);
+      quickY(window.innerHeight - event.clientY);
     }
-    window.addEventListener("pointermove", handlePointerMove, { signal: abortController.signal });
+    window.addEventListener("pointermove", handlePointerMove, {
+      signal: abortController.signal,
+    });
 
     // Cleanup
     return () => {
