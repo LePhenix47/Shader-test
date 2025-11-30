@@ -33,7 +33,7 @@ bottom left TO center center
     float x_freq = 10.0;
     float y_freq = 5.0;
 
-    float strength = 0.01;
+    float strength = 0.005;
 
     uv.x += cos(uv.y * x_freq + u_time) * strength;
     uv.y += sin(uv.x * y_freq + u_time) * strength;
