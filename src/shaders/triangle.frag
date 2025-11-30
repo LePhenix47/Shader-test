@@ -12,6 +12,19 @@ uniform vec2 u_mouse;
 uniform vec2 u_resolution;
 uniform sampler2D u_texture;
 
+vec3 chromaticAberration(vec2 uv, float offset) {
+    // Offset red to the RIGHT
+    float r = texture2D(u_texture, uv + vec2(offset, 0.0)).r;
+
+    // Green stays centered
+    float g = texture2D(u_texture, uv).g;
+
+    // Offset blue to the LEFT
+    float b = texture2D(u_texture, uv - vec2(offset, 0.0)).b;
+
+    return vec3(r, g, b);
+}
+
 void main() {
     // Normalize coordinates (0 to 1)
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
@@ -30,21 +43,10 @@ bottom left TO center center
 // Now that the origin is at the middle of the screen, we make them between -1 & 1
     uv += 0.5;
 
-    float common_frequency = 1.5;
-    float x_freq = 10.0;
-    float y_freq = 5.0;
+    float offset = sin(0.005 + u_time) * 0.01;
 
-    float strength = 0.005;
+    vec3 finalColor = chromaticAberration(uv, offset);
 
-    uv.x += cos(uv.y * x_freq + u_time) * strength;
-    uv.y += sin(uv.x * y_freq + u_time) * strength;
-
-    float offset = d * 0.005;
-
-    float r = texture2D(u_texture, uv + offset).r;
-    float g = texture2D(u_texture, uv).g;
-    float b = texture2D(u_texture, uv - offset).b;
-
-    gl_FragColor = vec4(r, g, b, 1.0);
+    gl_FragColor = vec4(finalColor, 1.0);
 
 }

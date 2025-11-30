@@ -3,7 +3,7 @@ import * as THREE from "three";
 import gsap from "gsap";
 import vertexShader from "@/shaders/triangle.vert";
 import fragmentShader from "@/shaders/triangle.frag";
-import testImage from "/img/jpg/test.jpg";
+import testImage from "/img/jpg/profile-pic.jpg";
 
 export function TriangleScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
