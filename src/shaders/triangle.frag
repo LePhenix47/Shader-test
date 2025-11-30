@@ -12,6 +12,39 @@ uniform vec2 u_mouse;
 uniform vec2 u_resolution;
 uniform sampler2D u_texture;
 
+// Random number generator
+float random(vec2 st) {
+    return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+// Pixelation effect
+vec2 pixelate(vec2 uv) {
+    float gridSize = 20.0; // Size of grid blocks
+    vec2 gridPos = floor(uv * gridSize); // Which grid cell is this pixel in?
+
+    // Randomly decide if this block should be pixelated
+    float timeStep = floor(u_time * 5.0);
+    float shouldPixelate = random(gridPos + timeStep);
+
+    if(shouldPixelate > 0.9) { // Only 10% of blocks get pixelated
+        // Snap UV to grid for this block
+        return floor(uv * gridSize) / gridSize;
+    }
+
+    return uv; // Return unchanged UV if not pixelated
+}
+
+// Noise effect
+vec3 addNoise(vec3 color, vec2 uv) {
+    // Generate random noise value
+    float noise = random(uv + u_time) * 0.2; // 0.2 = noise intensity
+
+    // Add noise to all color channels
+    color += vec3(noise);
+
+    return color;
+}
+
 vec3 chromaticAberration(vec2 uv, float offset) {
     // Offset red to the RIGHT
     float r = texture2D(u_texture, uv + vec2(offset, 0.0)).r;
@@ -63,6 +96,7 @@ bottom left TO center center
 // Now that the origin is at the middle of the screen, we make them between -1 & 1
     uv += 0.5;
 
+    uv = pixelate(uv);
     uv = horizontalDisplacement(uv);
 
     float frequency = 1.5;
@@ -70,6 +104,7 @@ bottom left TO center center
     float offset = sin(0.005 + u_time * frequency) * strength;
 
     vec3 finalColor = chromaticAberration(uv, offset);
+    finalColor = addNoise(finalColor, uv);
 
     gl_FragColor = vec4(finalColor, 1.0);
 
