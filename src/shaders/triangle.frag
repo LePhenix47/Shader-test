@@ -26,9 +26,17 @@ bottom left TO center center
     float screenAspect = u_resolution.x / u_resolution.y;
     uv.x *= screenAspect;
 
+// Now that the origin is at the middle of the screen, we make them between -1 & 1
     uv += 0.5;
 
-    uv.x += sin(uv.y * 1.5 + u_time) * 0.01;
+    float common_frequency = 1.5;
+    float x_freq = 10.0;
+    float y_freq = 5.0;
+
+    float strength = 0.01;
+
+    uv.x += cos(uv.y * x_freq + u_time) * strength;
+    uv.y += sin(uv.x * y_freq + u_time) * strength;
 
     vec4 texColor = texture2D(u_texture, uv);
 
