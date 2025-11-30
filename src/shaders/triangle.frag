@@ -14,12 +14,15 @@ uniform sampler2D u_texture;
 
 void main() {
     // Normalize coordinates (0 to 1)
-    vec2 uv = gl_FragCoord.xy / u_resolution;
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
 
-    // TODO: Create your river effect here by distorting the UV coordinates!
-    // Hint: Modify uv.x or uv.y using sin/cos with u_time
+    uv -= 0.5;
 
-    // Sample the texture
+    float screenAspect = u_resolution.x / u_resolution.y;
+    uv.x *= screenAspect;
+
+    uv += 0.5;
+
     vec4 texColor = texture2D(u_texture, uv);
 
     gl_FragColor = texColor;
