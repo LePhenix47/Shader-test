@@ -25,6 +25,26 @@ vec3 chromaticAberration(vec2 uv, float offset) {
     return vec3(r, g, b);
 }
 
+vec2 horizontalDisplacement(vec2 uv) {
+    // Variable band sizes
+    float numberOfBands = 15.0 + sin(uv.y * 20.0) * 5.0; // Varies between 10-20 bands
+    float band = floor(uv.y * numberOfBands);
+
+    // Make it jump (not smooth)
+    float timeStep = floor(u_time * 12.5);
+
+    // Create pseudo-random offset with more variation
+    float offset = sin(band * 50.0 + timeStep) * 0.15;
+
+    // Make glitches much rarer and more random
+    float shouldGlitch = sin(band * 543.21 + timeStep * 13.7);
+    if(shouldGlitch > 0.85) {  // Only ~15% of bands glitch (was 0.5 = 50%)
+        uv.x += offset;
+    }
+
+    return uv;
+}
+
 void main() {
     // Normalize coordinates (0 to 1)
     vec2 uv = gl_FragCoord.xy / u_resolution.xy;
@@ -43,7 +63,9 @@ bottom left TO center center
 // Now that the origin is at the middle of the screen, we make them between -1 & 1
     uv += 0.5;
 
-    float frequency = 1.25;
+    uv = horizontalDisplacement(uv);
+
+    float frequency = 1.5;
     float strength = 0.01;
     float offset = sin(0.005 + u_time * frequency) * strength;
 
