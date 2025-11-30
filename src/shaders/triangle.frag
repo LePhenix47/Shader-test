@@ -43,7 +43,9 @@ bottom left TO center center
 // Now that the origin is at the middle of the screen, we make them between -1 & 1
     uv += 0.5;
 
-    float offset = sin(0.005 + u_time) * 0.01;
+    float frequency = 1.25;
+    float strength = 0.01;
+    float offset = sin(0.005 + u_time * frequency) * strength;
 
     vec3 finalColor = chromaticAberration(uv, offset);
 
