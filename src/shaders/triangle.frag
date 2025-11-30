@@ -25,6 +25,7 @@ bottom left TO center center
 
     float screenAspect = u_resolution.x / u_resolution.y;
     uv.x *= screenAspect;
+    float d = length(uv);
 
 // Now that the origin is at the middle of the screen, we make them between -1 & 1
     uv += 0.5;
@@ -38,7 +39,12 @@ bottom left TO center center
     uv.x += cos(uv.y * x_freq + u_time) * strength;
     uv.y += sin(uv.x * y_freq + u_time) * strength;
 
-    vec4 texColor = texture2D(u_texture, uv);
+    float offset = d * 0.005;
 
-    gl_FragColor = texColor;
+    float r = texture2D(u_texture, uv + offset).r;
+    float g = texture2D(u_texture, uv).g;
+    float b = texture2D(u_texture, uv - offset).b;
+
+    gl_FragColor = vec4(r, g, b, 1.0);
+
 }
